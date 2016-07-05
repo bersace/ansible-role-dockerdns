@@ -58,11 +58,11 @@ galaxy_info:
   #  - all
   #  - any
   - name: Debian
-   versions:
-  #  - all
-  #  - jessie
-   - sid
-   - stretch
+    versions:
+    #- all
+    #- jessie
+    - sid
+    - stretch
 
   galaxy_tags:
   - docker
