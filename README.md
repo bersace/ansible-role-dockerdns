@@ -10,9 +10,12 @@ dnsmasq as docker default nameserver.
 Role Variables
 --------------
 
-- `iface`: name of the dummy network interface (default: `dockerdns0`).
-- `network`: IPv4 range in which DNS servers will bind an address (default: 192.168.7.0/24).
-- `domain`: Containers will be member of this domain (default: `docker`).
+    # Name of the dummy network interface.
+    iface: dockerdns0
+    # IPv4 range in which DNS servers will bind an address.
+    network: 192.168.7.0/24
+    # Containers will be member of this domain:
+    domain: docker
 
 
 Example Playbook
