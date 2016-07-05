@@ -12,8 +12,10 @@
   template:
     src: interfaces
     dest: /etc/network/interfaces.d/dockerdns
+  register: interfaces
 
 - name: start interface
+  when: interfaces|changed
   become: yes
   command: ifup {{ iface }}
 
@@ -22,14 +24,17 @@
   template:
     src: dnsmasq.conf
     dest: /etc/dnsmasq.d/docker.conf
+  register: dnsmasq_docker_conf
 
 - name: restart dnsmasq
+  when: dnsmasq_docker_conf|changed
   become: yes
   service:
     name: dnsmasq
     state: restarted
 
 - name: restart docker
+  when: dnsmasq_docker_conf|changed
   become: yes
   shell: systemctl restart docker
 
@@ -49,3 +54,4 @@
 
 - name: test resolution
   shell: getent hosts dnsdock.docker
+  changed_when: false
