@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+auto {{ iface }}
+iface {{ iface }} inet manual
+        pre-up ip link add $IFACE type dummy
+        pre-up ip link set dev $IFACE up
+        post-down ip link set dev $IFACE down || true
+        post-down ip link delete dev $IFACE type dummy || true
+
+# IP statique routable pour le dnsmasq local. docker l'utilise comme serveur
+# DNS pour les conteneurs.
+iface {{ iface }} inet static
+        netmask {{ network|ipaddr('netmask') }}
+        address {{ network|ipaddr('1') }}
+        post-up   echo nameserver {{ network|ipaddr('1') }} | resolvconf -a lo.inet
+        post-down resolvconf -d lo.inet || true
+
+# IP fixe pour le serveur DNS de la zone docker
+iface {{ iface }} inet static
+        netmask {{ network|ipaddr('netmask') }}
+        address {{ network|ipaddr('2') }}

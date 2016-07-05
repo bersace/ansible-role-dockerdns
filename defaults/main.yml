@@ -1,0 +1,4 @@
+---
+iface: dockerdns0
+network: 192.168.7.0/24
+domain: docker

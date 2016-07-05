@@ -1,0 +1,51 @@
+---
+- name: install python dependencies
+  become: yes
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - docker-py
+    - netaddr
+
+- name: setup interfaces
+  become: yes
+  template:
+    src: interfaces
+    dest: /etc/network/interfaces.d/dockerdns
+
+- name: start interface
+  become: yes
+  command: ifup {{ iface }}
+
+- name: setup .docker zone delegation
+  become: yes
+  template:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.d/docker.conf
+
+- name: restart dnsmasq
+  become: yes
+  service:
+    name: dnsmasq
+    state: restarted
+
+- name: restart docker
+  become: yes
+  shell: systemctl restart docker
+
+- name: run dnsdock
+  become: yes
+  docker:
+    name: dnsdock
+    image: tonistiigi/dnsdock
+    docker_api_version: "1.20"
+    expose: [53/udp]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "{{ network|ipaddr('2')|ipaddr('address') }}:53:53/udp"
+    restart_policy: always
+    command: -domain={{ domain }}
+
+- name: test resolution
+  shell: getent hosts dnsdock.docker
