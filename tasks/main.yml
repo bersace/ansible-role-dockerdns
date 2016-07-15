@@ -26,6 +26,25 @@
     dest: /etc/dnsmasq.d/docker.conf
   register: dnsmasq_docker_conf
 
+- name: create dnsmasq.service.d
+  become: yes
+  file:
+    state: directory
+    path: /etc/systemd/system/dnsmasq.service.d/
+
+- name: reorder dnsmasq boot dependencies
+  become: yes
+  copy:
+    dest: /etc/systemd/system/dnsmasq.service.d/dockerdns.conf
+    content: |
+      [Unit]
+      Wants=network-online.target
+      After=network-online.target
+
+- name: reload systemd
+  become: yes
+  command: systemctl daemon-reload
+
 - name: restart dnsmasq
   when: dnsmasq_docker_conf|changed
   become: yes
