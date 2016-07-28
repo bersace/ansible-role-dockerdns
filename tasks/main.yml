@@ -71,6 +71,10 @@
     restart_policy: always
     command: -domain={{ domain }}
 
+- name: update resolvconf
+  become: yes
+  command: resolvconf -u
+
 - name: test resolution
   shell: getent hosts dnsdock.docker
   changed_when: false
