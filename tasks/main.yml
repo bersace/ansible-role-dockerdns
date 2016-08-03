@@ -70,6 +70,7 @@
       - "{{ network|ipaddr('2')|ipaddr('address') }}:53:53/udp"
     restart_policy: always
     command: -domain={{ domain }}
+  when: run_dnsdock
 
 - name: update resolvconf
   become: yes
@@ -78,3 +79,4 @@
 - name: test resolution
   shell: getent hosts dnsdock.docker
   changed_when: false
+  when: run_dnsdock
