@@ -59,10 +59,11 @@
 
 - name: run dnsdock
   become: yes
-  docker:
+  docker_container:
+    api_version: "1.20"
     name: dnsdock
     image: aacebedo/dnsdock:latest-amd64
-    docker_api_version: "1.20"
+    pull: yes
     expose: [53/udp]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
