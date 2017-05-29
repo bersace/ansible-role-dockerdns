@@ -9,6 +9,19 @@ Run dnsdocker to resolve containers name with .docker TLD and setup local
 dnsmasq as docker default nameserver.
 
 
+```
+LAN      local dnsmasq     Docker Engine            dnsdock                   container
+ |              |                |                     |                          |
+ |              |                *----- set local dnsmasq as nameserver --------->*
+ |              |                |                     |                          |
+ |              *<--------------------- DNS queries ------------------------------*
+ |              |                |                     |                          |
+ |              *---------- delegate .docker --------->*                          |
+ |              |                |                     |                          |
+ *<- delegate --*                |                     |                          |
+ |              |                |                     |                          |
+```
+
 Role Variables
 --------------
 
@@ -22,8 +35,6 @@ Role Variables
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: localhost
       roles:
