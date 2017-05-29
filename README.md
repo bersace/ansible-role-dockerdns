@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bersace/ansible-dockerdns.svg?branch=master)](https://travis-ci.org/bersace/ansible-dockerdns)
+[![Build Status](https://travis-ci.org/bersace/ansible-role-dockerdns.svg?branch=master)](https://travis-ci.org/bersace/ansible-role-dockerdns)
 
 dockerdns
 =========
