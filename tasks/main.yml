@@ -2,9 +2,8 @@
 - name: install python dependencies
   become: yes
   pip:
-    name: "{{ item }}"
-  with_items:
-    - docker-py
+    name:
+    - docker
     - netaddr
 
 - name: setup interfaces
@@ -15,7 +14,7 @@
   register: interfaces
 
 - name: start interface
-  when: interfaces|changed
+  when: interfaces is changed
   become: yes
   command: ifup {{ iface }}
 
@@ -46,14 +45,14 @@
   command: systemctl daemon-reload
 
 - name: restart dnsmasq
-  when: dnsmasq_docker_conf|changed
+  when: dnsmasq_docker_conf is changed
   become: yes
   service:
     name: dnsmasq
     state: restarted
 
 - name: restart docker
-  when: dnsmasq_docker_conf|changed
+  when: dnsmasq_docker_conf is changed
   become: yes
   shell: systemctl restart docker
 
