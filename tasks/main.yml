@@ -59,7 +59,7 @@
 - name: run dnsdock
   become: yes
   docker_container:
-    api_version: "1.20"
+    api_version: "1.26"
     name: dnsdock
     image: aacebedo/dnsdock:latest-amd64
     pull: yes
