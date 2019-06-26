@@ -67,7 +67,7 @@
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "{{ network|ipaddr('2')|ipaddr('address') }}:53:53/udp"
+      - "{{ network|ipaddr(2)|ipaddr('address') }}:53:53/udp"
     restart_policy: always
     command: --domain={{ domain }} --verbose
   when: run_dnsdock

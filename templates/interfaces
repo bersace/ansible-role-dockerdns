@@ -11,11 +11,11 @@ iface {{ iface }} inet manual
 # DNS pour les conteneurs.
 iface {{ iface }} inet static
         netmask {{ network|ipaddr('netmask') }}
-        address {{ network|ipaddr('1')|ipaddr('address') }}
-        post-up   echo nameserver {{ network|ipaddr('1')|ipaddr('address') }} | resolvconf -a lo.inet
+        address {{ network|ipaddr(1)|ipaddr('address') }}
+        post-up   echo nameserver {{ network|ipaddr(1)|ipaddr('address') }} | resolvconf -a lo.inet
         post-down resolvconf -d lo.inet || true
 
 # IP fixe pour le serveur DNS de la zone docker
 iface {{ iface }} inet static
         netmask {{ network|ipaddr('netmask') }}
-        address {{ network|ipaddr('2')|ipaddr('address') }}
+        address {{ network|ipaddr(2)|ipaddr('address') }}
